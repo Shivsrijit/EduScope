@@ -2,6 +2,7 @@
 from transformers import pipeline
 from sklearn.cluster import KMeans
 import numpy as np
+import google.generativeai as genai
 
 class AdvancedAIFeatures:
     def __init__(self):
@@ -86,6 +87,7 @@ class AIGameMaster:
 class InteractiveTutor:
     def __init__(self):
         """Initialize interactive tutoring system"""
+        self.model = genai.GenerativeModel("gemini-pro")
         self.qa_model = pipeline("question-answering")
         
     def provide_hints(self, question, context, num_hints=3):
@@ -110,3 +112,29 @@ class InteractiveTutor:
             "practical": self._generate_practical_examples(concept)
         }
         return explanations
+    def generate_explanation(self, topic, user_level, learning_style):
+        """Generate an AI-powered explanation"""
+        prompt = f"Explain {topic} in a way that suits a level {user_level} learner. Include interactive examples."
+
+        print(f"📢 Sending prompt to AI: {prompt}")
+        
+        try:
+            response = self.model.generate_content(prompt)
+            print(f"📢 AI Response: {response}")
+
+            if not response or not hasattr(response, "text"):
+                raise ValueError("Gemini API returned an empty response")
+
+            # Ensuring "interactive" key always exists
+            return {
+                "text": response.text,
+                "interactive": "No interactive examples available at the moment."  # Default fallback
+            }
+
+        except Exception as e:
+            print(f"⚠️ Error in AI Explanation: {e}")
+            return {
+                "text": "AI could not generate an explanation.",
+                "interactive": "No interactive examples available."
+            }
+        
