@@ -1,0 +1,2 @@
+# EduScope
+AI Powered Learning
