@@ -43,7 +43,10 @@ class EduScopeApp:
         with tab3:
             self.interactive_tutor_tab()
         with tab4:
-            self.learning_dashboard_tab()
+            if hasattr(self, "learning_dashboard_tab"):
+                self.learning_dashboard_tab()  # ✅ Ensure this method exists
+            else:
+                st.error("Error: `learning_dashboard_tab()` is missing.")
             
     def render_sidebar(self):
         """Render sidebar with advanced features"""
@@ -99,7 +102,7 @@ class EduScopeApp:
             result = response.json()
             
             # Display results
-            self.display_detection_results(result)
+            self.display_detection_results()
             
             # Generate challenge if enabled
             if challenge_mode:
@@ -173,6 +176,33 @@ class EduScopeApp:
                     
         except Exception as e:
             st.error(f"Error loading questions: {e}")
+    def upload_learning_tab(self):
+        """Upload learning materials"""
+        st.header("Upload & Learn")
+        
+        uploaded_file = st.file_uploader("Upload your document/image", type=["jpg", "png", "pdf"])
+        
+        if uploaded_file:
+            files = {"file": uploaded_file.getvalue()}
+            try:
+                response = requests.post(f"{self.API_URL}/upload/material", files=files)
+                result = response.json()
+                st.success("Upload successful! Processing...")
+                st.write(result)
+            except Exception as e:
+                st.error(f"Upload failed: {e}")
+    def learning_dashboard_tab(self):
+        """Display Learning Dashboard (Placeholder)"""
+        st.header("Learning Dashboard")
+        st.write("This is the learning dashboard. More features coming soon!")
+
+    def display_detection_results(self):
+        """Display AI Detection Results (Placeholder)"""
+        st.header("Detection Results")
+        st.write("AI-based detection results will be shown here.")
+
+
+
 
 # Run the app
 if __name__ == "__main__":

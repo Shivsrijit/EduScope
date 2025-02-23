@@ -7,12 +7,21 @@ import numpy as np
 import cv2
 import json
 
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 from ml_model.yolo_model import YOLOObjectDetector
 from ml_model.content_generator import ContentGenerator
 from ml_model.advanced_features import AdvancedAIFeatures, AIGameMaster, InteractiveTutor
 from utils.gamification import GamificationSystem
 
 app = FastAPI(title="EduScope API")
+
+gemini_api_key = os.getenv("GEMINI_API_KEY")
+
 
 # Configure CORS
 app.add_middleware(
@@ -25,7 +34,7 @@ app.add_middleware(
 
 # Initialize AI components
 detector = YOLOObjectDetector()
-content_generator = ContentGenerator()
+content_generator = ContentGenerator(api_key=gemini_api_key)
 advanced_ai = AdvancedAIFeatures()
 game_master = AIGameMaster()
 tutor = InteractiveTutor()
