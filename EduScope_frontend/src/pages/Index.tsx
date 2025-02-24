@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CameraPopup from '../components/CameraPopup';
 
 const Index = () => {
   const [isHovered, setIsHovered] = useState('');
@@ -17,6 +18,7 @@ const Index = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
 
   const features = [
     {
@@ -46,43 +48,39 @@ const Index = () => {
   ];
 
   const startCamera = async () => {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: 'environment',
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
-          }
-        });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { 
+          facingMode: 'environment',
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        } 
+      });
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
         setShowCamera(true);
-      } catch (err) {
-        console.error('Camera error:', err);
-        toast({
-          title: "Error",
-          description: "Could not access camera",
-          variant: "destructive"
-        });
       }
+    } catch (err) {
+      console.error('Camera error:', err);
+      toast({
+        title: "Camera Error",
+        description: "Unable to access camera. Please check permissions and try again.",
+        variant: "destructive"
+      });
     }
   };
 
   const captureImage = () => {
     if (videoRef.current) {
       const canvas = document.createElement('canvas');
-      const video = videoRef.current;
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+      canvas.width = videoRef.current.videoWidth;
+      canvas.height = videoRef.current.videoHeight;
       const ctx = canvas.getContext('2d');
-      
       if (ctx) {
-        // Flip horizontally if using front camera
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const imageData = canvas.toDataURL('image/jpeg', 1.0);
-        setCapturedImage(imageData);
+        ctx.drawImage(videoRef.current, 0, 0);
+        const imageDataURL = canvas.toDataURL('image/jpeg');
+        setCapturedImage(imageDataURL);
         stopCamera();
       }
     }
@@ -91,7 +89,8 @@ const Index = () => {
   const stopCamera = () => {
     if (videoRef.current && videoRef.current.srcObject) {
       const stream = videoRef.current.srcObject as MediaStream;
-      stream.getTracks().forEach(track => track.stop());
+      const tracks = stream.getTracks();
+      tracks.forEach(track => track.stop());
       videoRef.current.srcObject = null;
       setShowCamera(false);
     }
@@ -99,16 +98,20 @@ const Index = () => {
 
   const handleAuthSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-<<<<<<< HEAD
-=======
-    // Authentication logic will be added later
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      toast({ title: "Success", description: "Logged in successfully!", variant: "default" });
-      setShowAuth(false);
-    }, 1000);
->>>>>>> 3e144e4 (Finalll Changes)
+  };
+
+  const handleOpenCamera = () => {
+    setIsCameraOpen(true);
+  };
+
+  const handleCloseCamera = () => {
+    setIsCameraOpen(false);
+  };
+
+  const handleCapture = (imageData: string) => {
+    console.log("Captured image data:", imageData);
+    setCapturedImage(imageData);
+    handleCloseCamera();
   };
 
   return (
@@ -119,7 +122,7 @@ const Index = () => {
       <section className="pt-32 pb-20 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="font-orbitron text-4xl md:text-6xl font-bold mb-6 animate-slideDown">
-            Welcome to EduScope
+            Welcome to Futuristic GenZ
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
               Innovate, Create, Learn
             </span>
@@ -263,71 +266,22 @@ const Index = () => {
           
           {/* Camera Section */}
           <div className="relative mt-8">
-            {showCamera ? (
-              <div className="relative max-w-3xl mx-auto">
-                <div className="aspect-[16/9] bg-black rounded-lg overflow-hidden">
-                  <video
-                    ref={videoRef}
-                    autoPlay
-                    playsInline
-                    muted
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4">
-                  <Button
-                    onClick={captureImage}
-                    className="px-6 py-3 bg-green-500 rounded-lg font-montserrat shadow-lg hover:bg-green-600 transition-all"
-                  >
-                    Capture
-                  </Button>
-                  <Button
-                    onClick={stopCamera}
-                    className="px-6 py-3 bg-red-500 rounded-lg font-montserrat shadow-lg hover:bg-red-600 transition-all"
-                  >
-                    Cancel
-                  </Button>
-                </div>
+            <button
+              onClick={handleOpenCamera}
+              className="group relative px-8 py-4 bg-white/10 rounded-xl border border-white/20 backdrop-blur-lg transition-all duration-300 hover:bg-white/20 animate-float"
+              onMouseEnter={() => setIsHovered('scan')}
+              onMouseLeave={() => setIsHovered('')}
+            >
+              <div className="flex items-center space-x-3">
+                <Scan className="w-6 h-6" />
+                <span className="font-montserrat text-lg">Scan an Object</span>
               </div>
-            ) : capturedImage ? (
-              <div className="max-w-3xl mx-auto">
-                <div className="aspect-[16/9] bg-black rounded-lg overflow-hidden">
-                  <img 
-                    src={capturedImage} 
-                    alt="Captured" 
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <div className="mt-4 flex justify-center">
-                  <Button
-                    onClick={() => {
-                      setCapturedImage(null);
-                      setShowCamera(false);
-                    }}
-                    className="px-6 py-3 bg-purple-500 rounded-lg font-montserrat shadow-lg hover:bg-purple-600 transition-all"
-                  >
-                    Take Another Photo
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <Button
-                onClick={startCamera}
-                className="group relative px-8 py-4 bg-white/10 rounded-xl border border-white/20 backdrop-blur-lg transition-all duration-300 hover:bg-white/20 animate-float"
-                onMouseEnter={() => setIsHovered('scan')}
-                onMouseLeave={() => setIsHovered('')}
-              >
-                <div className="flex items-center space-x-3">
-                  <Scan className="w-6 h-6" />
-                  <span className="font-montserrat text-lg">Scan an Object</span>
-                </div>
-                <div
-                  className={`absolute inset-0 rounded-xl bg-purple-500/20 transition-opacity duration-300 ${
-                    isHovered === 'scan' ? 'opacity-100' : 'opacity-0'
-                  }`}
-                />
-              </Button>
-            )}
+              <div
+                className={`absolute inset-0 rounded-xl bg-purple-500/20 transition-opacity duration-300 ${
+                  isHovered === 'scan' ? 'opacity-100' : 'opacity-0'
+                }`}
+              />
+            </button>
           </div>
         </div>
       </section>
@@ -339,7 +293,7 @@ const Index = () => {
             <Link
               key={feature.id}
               to={feature.path}
-              className={`group relative p-6 bg-white/5 rounded-xl border border-white/10 backdrop-blur-lg transition-all duration-300 hover:bg-white/10 ${feature.animation}`}
+              className={group relative p-6 bg-white/5 rounded-xl border border-white/10 backdrop-blur-lg transition-all duration-300 hover:bg-white/10 ${feature.animation}}
               onMouseEnter={() => setIsHovered(feature.id)}
               onMouseLeave={() => setIsHovered('')}
             >
@@ -366,15 +320,18 @@ const Index = () => {
             <Link to="/support" className="font-montserrat text-white/70 hover:text-white transition-colors">Support</Link>
             <Link to="/feedback" className="font-montserrat text-white/70 hover:text-white transition-colors">Feedback</Link>
           </div>
-          <p className="font-montserrat text-white/50">© 2025 EduScope. All rights reserved.</p>
+          <p className="font-montserrat text-white/50">© 2024 Futuristic GenZ. All rights reserved.</p>
         </div>
       </footer>
+
+      {/* Camera Popup */}
+      <CameraPopup 
+        isOpen={isCameraOpen} 
+        onClose={handleCloseCamera} 
+        onCapture={handleCapture} 
+      />
     </div>
   );
 };
 
-<<<<<<< HEAD
 export default Index;
-=======
-export default Index;
->>>>>>> 3e144e4 (Finalll Changes)
