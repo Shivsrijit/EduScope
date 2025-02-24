@@ -23,8 +23,8 @@ Our platform converts physical objects into *engaging learning opportunities* th
 
 ### *Clone & Install*  
 bash
-git clone <YOUR_GIT_URL>
-cd <YOUR_PROJECT_NAME>
+git clone https://github.com/Shivsrijit
+
 npm i
 
 
