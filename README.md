@@ -1,71 +1,70 @@
-# EduScope - AI-Powered Learning Platform
+<div align="center">
 
-## 🎯 Problem Statement (PS3)
-Create an AI-powered platform that uses a device's camera or video feed to analyze physical materials in a user's environment and auto-generate engaging, interactive learning experiences.
+# 🎓 EduScope
+### AI-Powered Learning Platform
+
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red.svg)](https://streamlit.io/)
+
+</div>
+
+---
+
+## 📌 Problem Statement (PS3)
+> Create an AI-powered platform that uses a device's camera or video feed to analyze physical materials in a user's environment and auto-generate engaging, interactive learning experiences.
 
 ## 🌟 Overview
-EduScope transforms everyday objects into learning opportunities by:
-- Detecting components through computer vision
-- Generating customized educational content
-- Suggesting hands-on projects
-- Creating interactive learning experiences
 
-## 🔄 How It Works
+EduScope transforms everyday objects into learning opportunities through:
+- 🔍 AI-powered component detection
+- 📚 Automated learning content generation
+- 🛠️ Interactive project suggestions
+- 📊 Progress tracking and analytics
 
-### 1. Live Learning Mode
-- Point your camera at components/materials
-- AI detects and identifies objects
-- Generates immediate learning content:
-  - Component information
-  - Safety guidelines
-  - Usage instructions
-  - Project suggestions
+## ⚡ Quick Start
 
-Example:
+1. **Clone & Install**
+   ```bash
+   git clone https://github.com/yourusername/eduscope.git
+   cd eduscope
+   pip install -r requirements.txt
+   ```
 
-## Features
+2. **Set Up Environment**
+   ```bash
+   # Create .env file
+   GOOGLE_API_KEY=your_gemini_api_key_here
+   ```
 
-### 1. Live Learning Mode
-- **Real-time Object Detection**: Uses camera input to identify learning materials and components
-- **Instant Learning Content**: Generates comprehensive learning modules for detected objects
-- **Project Suggestions**: Offers creative project ideas based on available components
-- **Interactive Tips**: Provides real-time hints and safety guidelines
+3. **Run Application**
+   ```bash
+   streamlit run app.py
+   ```
 
-### 2. Project Explorer
-- Multiple input methods:
-  - Camera capture
-  - Image upload
-  - Text description
-- Customizable project parameters:
-  - Difficulty levels (Beginner/Intermediate/Advanced)
-  - Team size options
-- Detailed project suggestions including:
-  - Step-by-step instructions
-  - Required components
-  - Estimated completion time
-  - Learning outcomes
-  - Safety tips
+## 🔧 Core Features
 
-### 3. Team Collaboration
-- Create collaboration rooms
-- Join existing projects
-- Real-time team interaction
-- Shared learning experiences
+### 1. Component Detection
+- **Technology**: Google Gemini Vision API
+- **Capabilities**:
+  - Real-time object recognition
+  - Component property analysis
+  - Location mapping
+  - Safety assessment
 
-### 4. Progress Tracking
-- Personal achievement dashboard
-- Points system
-- Level progression
-- Badge rewards
-- Project completion tracking
+### 2. Learning Content Generation
+- Customized educational materials
+- Interactive tutorials
+- Safety guidelines
+- Best practices
 
-### 5. Global Leaderboard
-- Compare progress with other learners
-- Top performers showcase
-- Achievement rankings
-- Community engagement
+### 3. Project Suggestions
+- Difficulty-based recommendations
+- Required materials listing
+- Step-by-step instructions
+- Learning outcomes
 
-## Technical Architecture
+## 🏗️ Technical Architecture
 
 ### Frontend (Streamlit)
 - Interactive web interface
