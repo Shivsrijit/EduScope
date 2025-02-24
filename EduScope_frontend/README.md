@@ -81,10 +81,6 @@ npm run dev
 ## *🛠 Setup Instructions*  
 
 ### *2️⃣ Running the Application*  
-Start the backend:  
-bash
-cd backend
-uvicorn api.main:app --reload
 
 Start the frontend:  
 bash
