@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 
-=======
->>>>>>> 3e144e4 (Finalll Changes)
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { User, Mail, Lock, Github } from 'lucide-react';
@@ -138,8 +135,6 @@ const Auth = () => {
   );
 };
 
-<<<<<<< HEAD
+
 export default Auth;
-=======
-export default Auth;
->>>>>>> 3e144e4 (Finalll Changes)
+
