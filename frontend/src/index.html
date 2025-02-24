@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Learning Platform</title>
+    <link rel="stylesheet" href="styles/ProgressTracker.css">
+</head>
+<body>
+    <div id="leaderboard"></div>
+    <div id="progress-tracker"></div>
+
+    <script src="components/Leaderboard.js"></script>
+    <script src="components/ProgressTracker.js"></script>
+    <script>
+        // Initialize components
+        document.addEventListener('DOMContentLoaded', function() {
+            const leaderboard = new Leaderboard('leaderboard');
+            const progressTracker = new ProgressTracker('progress-tracker');
+        });
+    </script>
+</body>
+</html> 
