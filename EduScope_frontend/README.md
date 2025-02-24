@@ -80,16 +80,6 @@ npm run dev
 
 ## *🛠 Setup Instructions*  
 
-### *1️⃣ Environment Setup*  
-bash
-git clone <YOUR_GIT_URL>
-cd <YOUR_PROJECT_NAME>
-
-Create an .env file and add:  
-plaintext
-GEMINI_API_KEY=your_api_key_here
-
-
 ### *2️⃣ Running the Application*  
 Start the backend:  
 bash
