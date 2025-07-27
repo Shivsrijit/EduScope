@@ -1,4 +1,3 @@
-# backend/api/main.py
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -8,7 +7,6 @@ import cv2
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
 load_dotenv()
 
 from ml_model.yolo_model import YOLOObjectDetector
@@ -16,15 +14,12 @@ from ml_model.content_generator import ContentGenerator
 from ml_model.advanced_features import AdvancedAIFeatures, AIGameMaster, InteractiveTutor
 from utils.gamification import GamificationSystem
 
-# Load API Key
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 if not GEMINI_API_KEY:
     raise RuntimeError("⚠️ ERROR: GEMINI_API_KEY is missing! Set it in .env")
 
-# Initialize FastAPI app
 app = FastAPI(title="EduScope API")
 
-# Configure CORS (Allows Frontend to Communicate with Backend)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:8501"],  # Streamlit default port
@@ -78,7 +73,6 @@ async def analyze_learning_style(request: LearningStyleRequest):
 async def detect_image(file: UploadFile = File(...)):
     """Process uploaded image, detect objects, and generate learning content"""
     try:
-        # Read and decode image
         contents = await file.read()
         nparr = np.frombuffer(contents, np.uint8)
         image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
@@ -86,10 +80,8 @@ async def detect_image(file: UploadFile = File(...)):
         if image is None:
             raise ValueError("Uploaded image could not be decoded.")
 
-        # Improve image quality
         image = cv2.fastNlMeansDenoisingColored(image, None, 10, 10, 7, 21)  # Denoise
         
-        # Enhance contrast
         lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
         l, a, b = cv2.split(lab)
         clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8,8))
@@ -108,7 +100,6 @@ async def detect_image(file: UploadFile = File(...)):
         detections = detector.detect_objects(image)
         print(f"📢 Detections: {detections}")
 
-        # Generate AI learning content
         content = content_generator.generate_learning_content(detections)
         print(f"📢 AI Generated Content: {content}")
 
