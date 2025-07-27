@@ -4,10 +4,8 @@ from PIL import Image
 import os
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
-# Configure Gemini API
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 genai.configure(api_key=GOOGLE_API_KEY)
 
@@ -46,11 +44,9 @@ def main():
     uploaded_file = st.file_uploader("Upload a UI screenshot", type=['png', 'jpg', 'jpeg'])
     
     if uploaded_file:
-        # Display uploaded image
         image = Image.open(uploaded_file)
         st.image(image, caption="Uploaded UI Image", use_column_width=True)
         
-        # Analyze button
         if st.button("Analyze UI Components"):
             with st.spinner("Analyzing image using Gemini Vision..."):
                 result = analyze_ui_image(image)
@@ -58,7 +54,6 @@ def main():
                 if result["success"]:
                     st.success("Analysis Complete!")
                     
-                    # Display analysis in an expandable section
                     with st.expander("View Detailed Analysis", expanded=True):
                         st.markdown(result["analysis"])
                 else:
